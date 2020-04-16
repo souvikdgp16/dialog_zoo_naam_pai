@@ -103,10 +103,10 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-*.txt
-*.csv
+#*.txt
+#*.csv
 *.embed
-*.pkl
+#*.pkl
 *.pt
 *.pyc
 *.bin
