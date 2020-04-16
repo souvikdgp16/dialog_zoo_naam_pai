@@ -101,13 +101,13 @@ echo "========== $mode begin =========="
 
 if [ $mode = 'lm' ]; then
     echo "[!] Begin to train the N-gram Language Model"
-    python utils.py \
+    python33 utils.py \
         --dataset $dataset \
         --mode lm 
         
 elif [ $mode = 'transformer_preprocess' ]; then
     echo "[!] Preprocess the dataset for trainsformer(GPT2) model"
-    python utils.py \
+    python3 utils.py \
         --dataset $dataset \
         --mode preprocess_transformer \
         --ctx 200
@@ -117,13 +117,13 @@ elif [ $mode = 'perturbation' ]; then
     echo "[!] Begin to perturbation the source test dataset"
     for i in {1..10}
     do
-        python utils.py \
+        python3 utils.py \
             --mode perturbation \
             --perturbation_in ./data/$dataset/src-test.txt \
             --perturbation_out ./data/$dataset/src-test-perturbation-${i}.txt \
             --perturbation_mode $i
             
-        python utils.py \
+        python3 utils.py \
             --mode graph \
             --src ./data/$dataset/src-test-perturbation-${i}.txt \
             --tgt ./data/$dataset/tgt-test.txt \
@@ -149,20 +149,20 @@ elif [ $mode = 'vocab' ]; then
         echo "[!] ./processed/$dataset: already exists"
     fi
     
-    python utils.py \
+    python3 utils.py \
         --mode vocab \
         --cutoff 50000 \
         --vocab ./processed/$dataset/iptvocab.pkl \
         --file ./data/$dataset/src-train.txt
 
-    python utils.py \
+    python3 utils.py \
         --mode vocab \
         --cutoff 50000 \
         --vocab ./processed/$dataset/optvocab.pkl \
         --file ./data/$dataset/tgt-train.txt
         
     # generate the whole vocab for VHRED and KgCVAE (Variational model)
-    python utils.py \
+    python3 utils.py \
         --mode vocab \
         --cutoff 50000 \
         --vocab ./processed/$dataset/vocab.pkl \
@@ -172,21 +172,21 @@ elif [ $mode = 'stat' ]; then
     # analyse the graph information in the dataset
     echo "[!] analyze the graph coverage information"
     echo "[!] train information:"
-    python utils.py \
+    python3 utils.py \
          --mode stat \
          --dataset $dataset \
          --hops 3 \
          --split train
          
     echo "[!] test information"
-    python utils.py \
+    python3 utils.py \
          --mode stat \
          --dataset $dataset \
          --split test \
          --hops 3
          
     echo "[!] dev information"
-    python utils.py \
+    python3 utils.py \
          --mode stat \
          --dataset $dataset \
          --split dev \
@@ -194,7 +194,7 @@ elif [ $mode = 'stat' ]; then
         
 elif [ $mode = 'graph' ]; then
     # generate the graph file for the MTGCN model
-    python utils.py \
+    python3 utils.py \
         --mode graph \
         --src ./data/$dataset/src-train.txt \
         --tgt ./data/$dataset/tgt-train.txt \
@@ -208,7 +208,7 @@ elif [ $mode = 'graph' ]; then
         --no-fully \
         --self-loop \
     
-    python utils.py \
+    python3 utils.py \
         --mode graph \
         --src ./data/$dataset/src-test.txt \
         --tgt ./data/$dataset/tgt-test.txt \
@@ -222,7 +222,7 @@ elif [ $mode = 'graph' ]; then
         --no-fully \
         --self-loop \
 
-    python utils.py \
+    python3 utils.py \
         --mode graph \
         --src ./data/$dataset/src-dev.txt \
         --tgt ./data/$dataset/tgt-dev.txt \
@@ -294,7 +294,7 @@ elif [ $mode = 'train' ]; then
     
     # set the lr_gamma as 1, means that don't use the learning rate schedule
     # Transformer: lr(threshold) 1e-4, 1e-6 / others: lr(threshold) 1e-4, 1e-6
-    CUDA_VISIBLE_DEVICES="$CUDA" python train.py \
+    CUDA_VISIBLE_DEVICES="$CUDA" python3 train.py \
         --src_train ./data/$dataset/src-train.txt \
         --tgt_train ./data/$dataset/tgt-train.txt \
         --src_test ./data/$dataset/src-test.txt \
@@ -372,7 +372,7 @@ elif [ $mode = 'translate' ]; then
         tgt_vocab="./processed/$dataset/optvocab.pkl"
     fi
 
-    CUDA_VISIBLE_DEVICES="$CUDA" python translate.py \
+    CUDA_VISIBLE_DEVICES="$CUDA" python3 translate.py \
         --src_test ./data/$dataset/src-test.txt \
         --tgt_test ./data/$dataset/tgt-test.txt \
         --min_threshold 0 \
@@ -413,7 +413,7 @@ elif [ $mode = 'translate' ]; then
     for i in {1..10}
     do
         echo "========== running the perturbation $i =========="
-        CUDA_VISIBLE_DEVICES="$CUDA" python translate.py \
+        CUDA_VISIBLE_DEVICES="$CUDA" python3 translate.py \
             --src_test ./data/$dataset/src-test-perturbation-${i}.txt \
             --tgt_test ./data/$dataset/tgt-test.txt \
             --min_threshold 0 \
@@ -452,7 +452,7 @@ elif [ $mode = 'translate' ]; then
 
 elif [ $mode = 'eval' ]; then
     # before this mode, make sure you run the translate mode to generate the pred.txt file for evaluating.
-    CUDA_VISIBLE_DEVICES="$CUDA" python eval.py \
+    CUDA_VISIBLE_DEVICES="$CUDA" python3 eval.py \
         --model $model \
         --file ./processed/${dataset}/${model}/pure-pred.txt
         
@@ -465,7 +465,7 @@ elif [ $mode = 'curve' ]; then
     for i in $(seq 20 5 100)
     do
         # translate
-        CUDA_VISIBLE_DEVICES="$CUDA" python translate.py \
+        CUDA_VISIBLE_DEVICES="$CUDA" python3 translate.py \
             --src_test ./data/$dataset/src-test.txt \
             --tgt_test ./data/$dataset/tgt-test.txt \
             --min_threshold $i \
@@ -495,7 +495,7 @@ elif [ $mode = 'curve' ]; then
 
         # eval
         echo "========== eval ==========" >> ./processed/${dataset}/${model}/conclusion.txt
-        CUDA_VISIBLE_DEVICES="$CUDA" python eval.py \
+        CUDA_VISIBLE_DEVICES="$CUDA" python3 eval.py \
             --model $model \
             --file ./processed/${dataset}/${model}/pure-pred.txt >> ./processed/${dataset}/${model}/conclusion.txt
             

@@ -22,7 +22,7 @@ def load_file(path):
 def write_file_dailydialog(corpus, dataset, mode):
     src, tgt = [], []
     for dialogue in corpus:
-        se = dialogue,split('\t')
+        se = dialogue.split('\t')
         assert len(se) == 2
         context, response = se
         utterances = context.split('__eou__')

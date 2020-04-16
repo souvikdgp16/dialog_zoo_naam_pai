@@ -48,9 +48,9 @@ def write_file(mode, corpus):
 
             
 if __name__  == '__main__':
-    train_data = load_file('train.csv')
-    test_data = load_file('test.csv')
-    dev_data = load_file('valid.csv')
+    train_data = load_file('empatheticdialogues/train.csv')
+    test_data = load_file('empatheticdialogues/test.csv')
+    dev_data = load_file('empatheticdialogues/valid.csv')
 
     write_file('train', train_data)
     write_file('test', test_data)
