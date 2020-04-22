@@ -38,10 +38,10 @@ from model.MReCoSa import MReCoSa
 from model.MReCoSa_RA import MReCoSa_RA
 
 try:
-    from model.MTGCN import MTGCN
-    from model.MTGAT import MTGAT
-    from model.GatedGCN import GatedGCN
-    from model.layers import *
+    # from model.MTGCN import MTGCN
+    # from model.MTGAT import MTGAT
+    # from model.GatedGCN import GatedGCN
+    # from model.layers import *
 except:
     print(f'[!] cannot find the module "torch_geometric", ignore it')
 
@@ -321,14 +321,14 @@ def write_into_tb(pred_path, writer, writer_str, epoch, ppl, bleu_mode, model, d
     # load the dict
     # with open('./data/glove_embedding.pkl', 'rb') as f:
     #     dic = pickle.load(f)
-    dic = gensim.models.KeyedVectors.load_word2vec_format('./data/GoogleNews-vectors-negative300.bin', binary=True)
-    print('[!] load the GoogleNews 300 word2vector by gensim over')
-    ea_sum, vx_sum, gm_sum, counterp = 0, 0, 0, 0
-    for rr, cc in tqdm(list(zip(ref, tgt))):
-        ea_sum += cal_embedding_average(rr, cc, dic)
-        vx_sum += cal_vector_extrema(rr, cc, dic)
-        gm_sum += cal_greedy_matching_matrix(rr, cc, dic)
-        counterp += 1
+    # dic = gensim.models.KeyedVectors.load_word2vec_format('./data/GoogleNews-vectors-negative300.bin', binary=True)
+    # print('[!] load the GoogleNews 300 word2vector by gensim over')
+    # ea_sum, vx_sum, gm_sum, counterp = 0, 0, 0, 0
+    # for rr, cc in tqdm(list(zip(ref, tgt))):
+    #     ea_sum += cal_embedding_average(rr, cc, dic)
+    #     vx_sum += cal_vector_extrema(rr, cc, dic)
+    #     gm_sum += cal_greedy_matching_matrix(rr, cc, dic)
+    #     counterp += 1
         
     # write into the tensorboard
     writer.add_scalar(f'{writer_str}-Performance/PPL', ppl, epoch)
@@ -341,9 +341,9 @@ def write_into_tb(pred_path, writer, writer_str, epoch, ppl, bleu_mode, model, d
     writer.add_scalar(f'{writer_str}-Performance/Distinct-2', distinct_2, epoch)
     writer.add_scalar(f'{writer_str}-Performance/Ref-Distinct-1', rdistinct_1, epoch)
     writer.add_scalar(f'{writer_str}-Performance/Ref-Distinct-2', rdistinct_2, epoch)
-    writer.add_scalar(f'{writer_str}-Performance/Embedding-Average', ea_sum / counterp, epoch)
-    writer.add_scalar(f'{writer_str}-Performance/Vector-Extrema', vx_sum / counterp, epoch)
-    writer.add_scalar(f'{writer_str}-Performance/Greedy-Matching', gm_sum / counterp, epoch)
+    # writer.add_scalar(f'{writer_str}-Performance/Embedding-Average', ea_sum / counterp, epoch)
+    # writer.add_scalar(f'{writer_str}-Performance/Vector-Extrema', vx_sum / counterp, epoch)
+    # writer.add_scalar(f'{writer_str}-Performance/Greedy-Matching', gm_sum / counterp, epoch)
     
     # write now
     writer.flush()
