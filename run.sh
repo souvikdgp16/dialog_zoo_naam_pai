@@ -299,8 +299,8 @@ elif [ $mode = 'train' ]; then
         --tgt_train ./data/$dataset/tgt-train.txt \
         --src_test ./data/$dataset/src-test.txt \
         --tgt_test ./data/$dataset/tgt-test.txt \
-        --src_dev ./data/$dataset/src-dev.txt \
-        --tgt_dev ./data/$dataset/tgt-dev.txt \
+        --src_dev ./data/$dataset/src-valid.txt \
+        --tgt_dev ./data/$dataset/tgt-valid.txt \
         --src_vocab $src_vocab \
         --tgt_vocab $tgt_vocab \
         --train_graph ./processed/$dataset/train-graph.pkl \
@@ -310,7 +310,7 @@ elif [ $mode = 'train' ]; then
         --min_threshold 0 \
         --max_threshold 100 \
         --seed 30 \
-        --epochs 100 \
+        --epochs 1 \
         --lr $lr \
         --batch_size $batch_size \
         --model $model \
